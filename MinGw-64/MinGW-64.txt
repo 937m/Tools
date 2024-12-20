@@ -1,0 +1,11 @@
+msys2安装包下载路径：https://github.com/msys2/msys2-installer/tags
+
+1.任意找一个日期的版本，点击downloads,下载对应的.exe安装包
+如：2024年5月7号的  msys2-x86_64-20240507.exe
+
+2.安装完启动UCRT64，在终端中输入 pacman -S --needed base-devel mingw-w64-ucrt-x86_64-toolchain
+有反应之后，直接按回车键，默认接受所有的安装包，提示是否安装时，回车安装，安装完之后关闭终端
+打开 编辑系统环境变量(Edit the system environment variables)，高级(Advanced),环境变量(Environment Variables),
+编辑 Path, 添加自己的安装路径(C:\msys64\ucrt64\bin)在环境变量里，保存退出
+
+3.之后打开命令提示符(Windows + R)，输入 gcc --version，g++ --version，gdb --version ，都可以看到相应的版本号

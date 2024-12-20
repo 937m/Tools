@@ -1,0 +1,92 @@
+前提：安装过MinGW。(因为配置环境需要windows系统有gcc, g++, gdb这些)
+
+配置Visual Studio Code，运行C代码。
+
+VSCode 拓展里面安装：C/C++ , Code Runner。
+
+在本地创建一个文件夹用来做项目，比如MyProject。
+
+1.进入MyProject，创建.vscode文件夹，创建main.c(自己随便写点代码)。
+2.进入.vscode文件夹，创建tasks.json，内容如下：
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}.exe"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc"]
+        }
+    ]
+}
+
+3.进入.vscode文件夹，创建launch.json，内容如下(注意miDebuggerPath填自己安装的gdb路径,忘记安装位置，Windows + R打开命令提示符，输入where is gdb，返回值就是安装路径)：
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "C/C++: gcc.exe build and debug active file",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${fileDirname}/${fileBasenameNoExtension}.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "C:/msys64/ucrt64/bin/gdb.exe",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "build",
+            "internalConsoleOptions": "openOnSessionStart",
+            "logging": {
+                "moduleLoad": false,
+                "trace": false,
+                "engineLogging": false,
+                "programOutput": true,
+                "exceptions": false
+            }
+        }
+    ]
+}
+
+4.进入.vscode文件夹，创建c_cpp_properties.json，内容如下(注意compilerPath填自己的gcc安装路径)：
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "windowsSdkVersion": "10.0.19041.0",
+            "compilerPath": "C:/msys64/ucrt64/bin/gcc.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-gcc-x64"
+        }
+    ],
+    "version": 4
+}
+
+5.在main.c界面，找到终端->运行任务(或者Ctrl + Shift + B),会生成main.exe，然后 运行-启动调试(或者F5),就可以了。
